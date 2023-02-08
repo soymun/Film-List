@@ -9,24 +9,28 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "person")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String email;
+    private String comment;
 
-    private String password;
+    private Double grade;
 
-    private String name;
+    @Column(name = "film_id")
+    private Long filmId;
 
-    private String surname;
+    @ManyToOne
+    @JoinColumn(name = "film_id", insertable = false, updatable = false)
+    private Film film;
 
-    private Role role;
+    private Long likes;
+
+    private Long disLikes;
 }

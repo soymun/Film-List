@@ -17,10 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,8 +25,8 @@ import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
 @Slf4j
+@RestController
 public class AuthController {
 
     private UserService userService;
@@ -61,7 +58,7 @@ public class AuthController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
             User user = userService.getUserByEmail(loginDTO.getEmail());
-            String token = jwtTokenProvider.create(user.getEmail(), user.getRole().get(0));
+            String token = jwtTokenProvider.create(user.getEmail(), user.getRole());
             Map<Object, Object> map = new HashMap<>();
             map.put("id", user.getId());
             map.put("email", user.getEmail());
