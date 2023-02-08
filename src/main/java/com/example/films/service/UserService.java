@@ -29,7 +29,7 @@ public class UserService implements UserDetailsService {
             throw new RuntimeException("User not found");
         }
 
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), user.getRole());
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), user.getRole().authorities());
     }
 
     @Transactional

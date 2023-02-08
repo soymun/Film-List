@@ -42,7 +42,7 @@ public class JwtTokenProvider {
 
     public String create(String email, Role role){
         Claims claims = Jwts.claims().setSubject(email);
-        claims.put("role", role.getAuthority());
+        claims.put("role", role);
 
         Date issue = new Date();
         Date ex = new Date(issue.getTime() + validateInMillisecond);
@@ -66,7 +66,7 @@ public class JwtTokenProvider {
     public String resolveToken(HttpServletRequest request){
         String bearer = request.getHeader("Authorization");
         if(bearer != null && bearer.startsWith("Bearer ")){
-            return bearer.substring(7, bearer.length());
+            return bearer.substring(7);
         }
         return null;
     }
@@ -74,12 +74,9 @@ public class JwtTokenProvider {
     public boolean validateToken(String token){
         try{
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-            if(claimsJws.getBody().getExpiration().before(new Date())){
-                return false;
-            }
-            return true;
-        }catch (AuthenticationException e){
-            throw new RuntimeException("Token invalid");
+            return !claimsJws.getBody().getExpiration().before(new Date());
+        }catch (Exception e){
+            return false;
         }
     }
 }
