@@ -31,7 +31,7 @@ public class AuthController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping("/registration/{id}")
+    @PatchMapping("/registration/{id}")
     public ResponseEntity<?> registrationAdmin(@PathVariable Long id){
         return authenticationFacade.registrationAdmin(id);
     }

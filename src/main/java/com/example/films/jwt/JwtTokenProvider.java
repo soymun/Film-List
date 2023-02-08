@@ -2,7 +2,7 @@ package com.example.films.jwt;
 
 
 import com.example.films.entity.Role;
-import com.example.films.service.UserService;
+import com.example.films.service.Impl.UserServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -29,10 +28,10 @@ public class JwtTokenProvider {
     @Value("${jwt.provider.validate}")
     private Long validateInMillisecond;
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     @Autowired
-    public JwtTokenProvider(UserService userService) {
-        this.userService = userService;
+    public JwtTokenProvider(UserServiceImpl userServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
     }
 
     @PostConstruct
@@ -59,7 +58,7 @@ public class JwtTokenProvider {
     }
 
     public Authentication authentication(String token){
-        UserDetails userDetails = userService.loadUserByUsername(getEmail(token));
+        UserDetails userDetails = userServiceImpl.loadUserByUsername(getEmail(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 

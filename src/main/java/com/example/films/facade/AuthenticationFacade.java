@@ -4,10 +4,11 @@ import com.example.films.Exceptions.NoFindResource;
 import com.example.films.Response.ResponseDto;
 import com.example.films.dto.LoginDTO;
 import com.example.films.dto.RegDTO;
+import com.example.films.dto.UserDto;
 import com.example.films.entity.Role;
 import com.example.films.entity.User;
 import com.example.films.jwt.JwtTokenProvider;
-import com.example.films.service.UserService;
+import com.example.films.service.Impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ import java.util.Map;
 @Slf4j
 public class AuthenticationFacade {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     private final AuthenticationManager authenticationManager;
 
@@ -35,15 +36,15 @@ public class AuthenticationFacade {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public AuthenticationFacade(UserService userService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
-        this.userService = userService;
+    public AuthenticationFacade(UserServiceImpl userServiceImpl, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
+        this.userServiceImpl = userServiceImpl;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
     public ResponseEntity<?> registration(@RequestBody RegDTO regDTO){
-        User findUser = userService.getUserByEmail(regDTO.getEmail());
+        UserDto findUser = userServiceImpl.getUserByEmail(regDTO.getEmail());
         if(findUser != null){
             log.info("Повторная регистрация с email {}", regDTO.getEmail());
             throw new RuntimeException("Пользователь с таким email уже зарегистрирован");
@@ -55,14 +56,14 @@ public class AuthenticationFacade {
         user.setName(regDTO.getName());
         user.setSurname(regDTO.getSurname());
         user.setPassword(passwordEncoder.encode(regDTO.getPassword()));
-        userService.save(user);
+        userServiceImpl.saveUser(user);
         return ResponseEntity.ok(ResponseDto.builder().data("Регистрация прошла успешна").build());
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO){
         try {
-            User user = userService.getUserByEmail(loginDTO.getEmail());
+            UserDto user = userServiceImpl.getUserByEmail(loginDTO.getEmail());
             if(user == null){
                 throw new NoFindResource("Такого пользователя не существует");
             }
