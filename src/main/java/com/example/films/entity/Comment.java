@@ -23,6 +23,13 @@ public class Comment {
 
     private Double grade;
 
+    @Column(name = "user_id")
+    private Long userId;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private User user;
+
     @Column(name = "film_id")
     private Long filmId;
 

@@ -57,6 +57,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto updateUser(UserUpdateDto userUpdateDto) {
+        log.info("Изменение пользователя с id {}", userUpdateDto.getId());
         User user = userRepository.findUserById(userUpdateDto.getId());
         if(user == null){
             throw new NoFindResource("Пользователь не был найден");
@@ -81,6 +82,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUserById(Long id) {
+        log.info("Удаление пользователя с id {}", id);
         userRepository.deleteById(id);
     }
 }
