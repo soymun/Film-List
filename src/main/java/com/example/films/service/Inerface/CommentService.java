@@ -13,9 +13,11 @@ public interface CommentService {
 
     void deleteCommentById(Long id);
 
-    List<Comment> getCommentByFilmId(Long id);
+    List<CommentDto> getCommentByFilmId(Long id);
 
     CommentDto updateComment(CommentUpdateDto commentUpdateDto);
 
     CommentDto getCommentById(Long id);
+
+    List<CommentDto> getCommentByUserId(Long id);
 }

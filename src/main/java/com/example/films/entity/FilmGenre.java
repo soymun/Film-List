@@ -22,14 +22,19 @@ public class FilmGenre {
     @Column(name = "film_id")
     private Long filmId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "film_id", insertable = false, updatable = false)
     private Film film;
 
     @Column(name = "genre_id")
     private Long genreId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "genre_id", insertable = false, updatable = false)
     private Genre genre;
+
+    public FilmGenre(Long filmId, Long genreId) {
+        this.filmId = filmId;
+        this.genreId = genreId;
+    }
 }

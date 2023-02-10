@@ -1,5 +1,6 @@
 package com.example.films.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,9 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FilmDTO {
-
-    private Long id;
+public class FilmCreateDto {
 
     private String name;
 
@@ -22,7 +21,5 @@ public class FilmDTO {
 
     private LocalDate year;
 
-    private double avgGrade;
-
-    private List<String> genre;
+    private List<Long> genreId;
 }

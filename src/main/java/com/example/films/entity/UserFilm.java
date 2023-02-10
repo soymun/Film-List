@@ -21,11 +21,11 @@ public class UserFilm {
     @Column(name = "user_id")
     private Long userId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "film_id", insertable = false, updatable = false)
     private Film film;
 
@@ -33,4 +33,10 @@ public class UserFilm {
     private Long filmId;
 
     private Long placeInRatingUser;
+
+    public UserFilm(Long userId, Long filmId, Long placeInRatingUser) {
+        this.userId = userId;
+        this.filmId = filmId;
+        this.placeInRatingUser = placeInRatingUser;
+    }
 }

@@ -5,12 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FilmDTO {
+public class FilmUpdateDto {
 
     private Long id;
 
@@ -21,8 +20,4 @@ public class FilmDTO {
     private String url;
 
     private LocalDate year;
-
-    private double avgGrade;
-
-    private List<String> genre;
 }
