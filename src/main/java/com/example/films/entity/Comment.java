@@ -26,14 +26,14 @@ public class Comment {
     @Column(name = "user_id")
     private Long userId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
     @Column(name = "film_id")
     private Long filmId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "film_id", insertable = false, updatable = false)
     private Film film;
 

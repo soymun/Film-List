@@ -29,7 +29,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto createComment(CommentCreateDto commentCreateDto) {
         log.info("Сохранение рецензии пользователя с id {}", commentCreateDto.getUserId());
-        return commentMapper.commentToCommentDto(commentRepository.save(commentMapper.commentCreateDtoToComment(commentCreateDto)));
+        Comment comment = commentMapper.commentCreateDtoToComment(commentCreateDto);
+        comment.setDisLikes(0L);
+        comment.setLikes(0L);
+        return commentMapper.commentToCommentDto(commentRepository.save(comment));
     }
 
     @Override
@@ -41,7 +44,8 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<CommentDto> getCommentByFilmId(Long id) {
         log.info("Выдача коментариев по фильму с id {}", id);
-        return commentRepository.getCommentByFilmId(id).stream().map(commentMapper::commentToCommentDto).collect(Collectors.toList());
+        List<Comment> list =  commentRepository.getCommentsByFilmId(id);
+        return list.stream().map(commentMapper::commentToCommentDto).collect(Collectors.toList());
     }
 
     @Override

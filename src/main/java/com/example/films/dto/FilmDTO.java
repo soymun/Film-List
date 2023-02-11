@@ -24,5 +24,14 @@ public class FilmDTO {
 
     private double avgGrade;
 
-    private List<String> genre;
+    private List<GenreDto> genreDtos;
+
+    public FilmDTO(Long id, String name, String description, String url, LocalDate year, double avgGrade) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.url = url;
+        this.year = year;
+        this.avgGrade = avgGrade;
+    }
 }

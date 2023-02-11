@@ -1,54 +1,82 @@
 package com.example.films.Controller;
 
 
+import com.example.films.Response.ResponseDto;
+import com.example.films.dto.*;
+import com.example.films.service.Impl.FilmServiceImpl;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/hoq")
+@RequestMapping("/v1")
+@RequiredArgsConstructor
+@CrossOrigin(origins="http://localhost:3000")
 public class ContentController {
-//    private UserService userService;
-//    @Autowired
-//    public ContentController(UserService userService) {
-//        this.userService = userService;
-//    }
-//
-//    @GetMapping("/films")
-//    public List<Film> getFilm(@RequestBody Long id){
-//        return userService.getUserById(id).getFilm();
-//    }
-//
-//    @PostMapping("/film/create/{id}")
-//    public ResponseEntity<?> addFilm(@RequestBody FilmDTO filmDTO, @PathVariable Long id){
-//        Film film = new Film();
-//        if(filmDTO.getName() != null){
-//            film.setName(filmDTO.getName());
-//        }
-//        if(filmDTO.getUrl() != null){
-//            film.setUrl(filmDTO.getName());
-//        }
-//        film.setUserId(id);
-//        userService.saveFilmAndUpdate(film);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
-//
-//    @PutMapping("/film/update")
-//    public ResponseEntity<?> updateFilm(@RequestBody FilmDTO filmDTO){
-//        Film film = userService.getFilm(filmDTO.getId());
-//        if(film == null){
-//            throw new RuntimeException("Film not found");
-//        }
-//        if(filmDTO.getName() != null){
-//            film.setName(filmDTO.getName());
-//        }
-//        if(filmDTO.getUrl() != null){
-//            film.setUrl(filmDTO.getName());
-//        }
-//        userService.saveFilmAndUpdate(film);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
-//
-//    @DeleteMapping("/film/delete/{id}")
-//    public void deleteFilm(@PathVariable Long id){
-//        userService.deleteFilm(id);
-//    }
+
+    private final FilmServiceImpl filmService;
+
+    @PostMapping("/film")
+    public ResponseEntity<?> saveFilm(@RequestBody FilmCreateDto filmCreateDto){
+        filmService.saveFilm(filmCreateDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/film")
+    public ResponseEntity<?> updateFilm(@RequestBody FilmUpdateDto filmUpdateDto){
+        filmService.updateFilm(filmUpdateDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/film/{id}")
+    public ResponseEntity<?> getFilmById(@PathVariable Long id){
+        return ResponseEntity.ok(ResponseDto.builder().data(filmService.getFilmById(id)).build());
+    }
+
+    @GetMapping("/film/user/{id}")
+    public ResponseEntity<?> getFilmByUserId(@PathVariable Long id){
+        return ResponseEntity.ok(ResponseDto.builder().data(filmService.getFilmToUser(id)).build());
+    }
+
+    @GetMapping("/film")
+    public ResponseEntity<?> getFilmByRating(@RequestParam Long page){
+        return ResponseEntity.ok(ResponseDto.builder().data(filmService.getFilmToRating(page)).build());
+    }
+
+    @DeleteMapping("/film/{id}")
+    public ResponseEntity<?> deleteFilmById(@PathVariable Long id){
+        filmService.deleteFilmById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/film/genre")
+    public ResponseEntity<?> saveFilmGenre(@RequestBody FilmGenreCreateDto filmGenreCreateDto){
+        filmService.saveFilmGenre(filmGenreCreateDto);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/film/user")
+    public ResponseEntity<?> saveUserFilm(@RequestBody UserFilmCreateDto userFilmCreateDto){
+        filmService.saveUserFilm(userFilmCreateDto);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/film/user")
+    public ResponseEntity<?> updateUserFilm(@RequestBody UserFilmUpdateDto userFilmCreateDto){
+        filmService.updateUserFilm(userFilmCreateDto);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/film/user/{id}")
+    public ResponseEntity<?> deleteFilmUserById(@PathVariable Long id){
+        filmService.deleteUserFilmById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/film/genre/{id}")
+    public ResponseEntity<?> deleteFilmGenreById(@PathVariable Long id){
+        filmService.deleteFilmGenreById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

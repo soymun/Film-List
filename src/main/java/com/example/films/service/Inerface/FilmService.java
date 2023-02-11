@@ -27,4 +27,6 @@ public interface FilmService {
     void deleteUserFilmById(Long id);
 
     void deleteFilmGenreById(Long id);
+
+    List<GenreDto> getGenreByFilmId(Long filmId);
 }

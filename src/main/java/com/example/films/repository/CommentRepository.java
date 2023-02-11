@@ -10,7 +10,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     Optional<Comment> getCommentById(Long id);
 
-    List<Comment> getCommentByFilmId(Long filmId);
+    List<Comment> getCommentsByFilmId(Long id);
 
     List<Comment> getCommentByUserId(Long userId);
 }

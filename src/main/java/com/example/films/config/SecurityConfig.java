@@ -32,8 +32,8 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
-                .antMatchers("/film/login").permitAll()
-                .antMatchers("/film/registration").permitAll()
+                .antMatchers("/v1/film/login").permitAll()
+                .antMatchers("/v1/film/registration").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtTokenConfig(jwtTokenProvider));
