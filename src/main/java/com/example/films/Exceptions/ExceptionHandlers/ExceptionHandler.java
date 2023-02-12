@@ -19,7 +19,7 @@ public class ExceptionHandler {
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
-    public ResponseEntity<?> exception(NoFindResource exc){
+    public ResponseEntity<?> exception(Exception exc){
         log.debug(Arrays.toString(exc.getStackTrace()));
         return ResponseEntity.ok(ResponseDto.builder().error("Упс, что то случилось, попробуйте позже"));
     }
