@@ -5,6 +5,7 @@ import com.example.films.dto.GenreCreateDto;
 import com.example.films.service.Inerface.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,6 +21,7 @@ public class GenreController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> saveGenre(@RequestBody GenreCreateDto genreCreateDto) {
         return ResponseEntity.ok(ResponseDto.builder().data(genreService.saveGenre(genreCreateDto)).build());
     }
@@ -35,6 +37,7 @@ public class GenreController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> deleteGenre(@PathVariable Long id) {
         genreService.deleteGenre(id);
         return ResponseEntity.noContent().build();

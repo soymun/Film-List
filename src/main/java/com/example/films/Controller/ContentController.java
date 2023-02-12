@@ -7,6 +7,7 @@ import com.example.films.service.Impl.FilmServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,12 +19,14 @@ public class ContentController {
     private final FilmServiceImpl filmService;
 
     @PostMapping("/film")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> saveFilm(@RequestBody FilmCreateDto filmCreateDto){
         filmService.saveFilm(filmCreateDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PatchMapping("/film")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> updateFilm(@RequestBody FilmUpdateDto filmUpdateDto){
         filmService.updateFilm(filmUpdateDto);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -45,12 +48,14 @@ public class ContentController {
     }
 
     @DeleteMapping("/film/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> deleteFilmById(@PathVariable Long id){
         filmService.deleteFilmById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/film/genre")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> saveFilmGenre(@RequestBody FilmGenreCreateDto filmGenreCreateDto){
         filmService.saveFilmGenre(filmGenreCreateDto);
         return ResponseEntity.noContent().build();
